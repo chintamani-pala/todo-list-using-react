@@ -3,12 +3,13 @@ import "tailwindcss/tailwind.css";
 import TodoItems from "./TodoItems";
 import AddItems from "./AddItems";
 import Time from "./Time";
+import Swal from "sweetalert2";
 
 function TodoListApp() {
-  const [todos, setTodos] = useState(()=>{
+  const [todos, setTodos] = useState(() => {
     const storedTodos = JSON.parse(localStorage.getItem("myTodos"));
     if (storedTodos && Array.isArray(storedTodos)) {
-      return (storedTodos);
+      return storedTodos;
     } else {
       return [];
     }
@@ -27,9 +28,25 @@ function TodoListApp() {
     );
   };
 
-  const handleEditTodo = (index, newText, newPriority, newAi, newStartTime, newEndTime) => {
+  const handleEditTodo = (
+    index,
+    newText,
+    newPriority,
+    newAi,
+    newStartTime,
+    newEndTime
+  ) => {
     const updatedTodos = todos.map((todo, i) =>
-      i === index ? { ...todo, text: newText, priority: newPriority, ai: newAi, startTime: newStartTime, endTime: newEndTime } : todo
+      i === index
+        ? {
+            ...todo,
+            text: newText,
+            priority: newPriority,
+            ai: newAi,
+            startTime: newStartTime,
+            endTime: newEndTime,
+          }
+        : todo
     );
     setTodos(sortTodosByPriority(updatedTodos));
     setEditingIndex(null); // Exit edit mode
@@ -44,11 +61,42 @@ function TodoListApp() {
   }, [todos]);
 
   const handleClearTodos = () => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      },
+    });
     try {
-      setTodos([]);
-      localStorage.removeItem("myTodos");
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setTodos([]);
+          localStorage.removeItem("myTodos");
+          
+          Toast.fire({
+            icon: "success",
+            title: "All todo deleted successfully",
+          });
+        }
+      });
     } catch (error) {
-      console.error("Error clearing todos from localStorage:", error);
+      Toast.fire({
+        icon: "error",
+        title: "Something went wrong",
+      });
     }
   };
 
@@ -64,7 +112,6 @@ function TodoListApp() {
           editingIndex={editingIndex}
           setEditingIndex={setEditingIndex}
           handleEditTodo={handleEditTodo}
-
         />
         {todos.length > 0 && (
           <button

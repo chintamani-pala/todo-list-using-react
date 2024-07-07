@@ -64,7 +64,7 @@ const TodoItems = ({
         {todos.map((todo, index) => (
           <li
             key={index}
-            className={`flex flex-col w-full max-w-full items-center justify-between p-2 ${
+            className={`flex flex-col w-full max-w-full items-center justify-between rounded-lg mb-1 p-2 ${
               todo.completed
                 ? "bg-green-100"
                 : isCurrentTimeInRange(todo.startTime, todo.endTime)
