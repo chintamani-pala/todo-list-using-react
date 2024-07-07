@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "tailwindcss/tailwind.css";
 import TodoItems from "./TodoItems";
 import AddItems from "./AddItems";
+import Time from "./Time";
 
 function TodoListApp() {
   const [todos, setTodos] = useState(()=>{
@@ -53,8 +54,9 @@ function TodoListApp() {
 
   return (
     <div className="bg-gray-100 min-h-screen flex items-center justify-center">
-      <div className="w-full max-w-md mx-auto bg-white rounded-lg shadow-lg p-6">
-        <h1 className="text-3xl font-bold mb-6 text-center">Todo List</h1>
+      <div className="w-full max-w-md mx-auto bg-white rounded-lg shadow-lg p-3">
+        <h1 className="text-3xl font-bold mb-1 text-center">Todo List</h1>
+        <Time />
         <AddItems setTodos={setTodos} todos={todos} />
         <TodoItems
           todos={todos}

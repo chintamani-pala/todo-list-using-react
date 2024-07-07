@@ -1,19 +1,26 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useEffect, useState } from "react";
+import {
+  useGetLocalTime,
+  getTodayEndTime,
+} from "../assets/utils/useGetLocalTime";
 const AddItems = ({ setTodos, todos }) => {
-  const [newTodo, setNewTodo] = useState('');
-  const [priority, setPriority] = useState('Low');
-  const [ai, setAi] = useState('No AI');
-  const [error, setError] = useState('');
+  const [newTodo, setNewTodo] = useState("");
+  const [priority, setPriority] = useState("Low");
+  const [ai, setAi] = useState("No AI");
+  const [error, setError] = useState("");
+  const [startTime, setStartTime] = useState(useGetLocalTime());
+  const [endTime, setEndTime] = useState(getTodayEndTime());
 
   const priorityOrder = {
-    High: 1, 
+    High: 1,
     Medium: 2,
     Low: 3,
   };
 
   const sortTodosByPriority = (todos) => {
-    return [...todos].sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+    return [...todos].sort(
+      (a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]
+    );
   };
 
   const handleAddTodo = (e) => {
@@ -21,23 +28,28 @@ const AddItems = ({ setTodos, todos }) => {
     const checkAlreadyExist = () => {
       return todos.find((todo) => todo.text.trim() === newTodo.trim());
     };
-    if(checkAlreadyExist()) {
-      setError('Todo already exists');
-    }
-    else if (newTodo.trim()) {
-      const updatedTodos = [...todos, { text: newTodo, completed: false, priority, ai }];
+    if (checkAlreadyExist()) {
+      setError("Todo already exists");
+    } else if (newTodo.trim()) {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      setStartTime(useGetLocalTime());
+      setEndTime(getTodayEndTime());
+      const updatedTodos = [
+        ...todos,
+        { text: newTodo, completed: false, priority, ai, startTime, endTime },
+      ];
       setTodos(sortTodosByPriority(updatedTodos));
-      setNewTodo('');
-      setPriority('Low');
-      setAi('No AI');
-      setError('');
+      setNewTodo("");
+      setPriority("Low");
+      setAi("No AI");
+      setError("");
     } else {
-      setError('Todo text cannot be empty.');
+      setError("Todo text cannot be empty.");
     }
   };
-  useEffect(()=>{
-    console.log(todos)
-  },[])
+  useEffect(() => {
+    console.log(todos);
+  }, [todos]);
 
   return (
     <div>
@@ -76,6 +88,22 @@ const AddItems = ({ setTodos, todos }) => {
             <option value="No AI">No AI</option>
             <option value="Chat GPT">Chat GPT</option>
           </select>
+        </div>
+        <div className="flex space-x-2">
+          <input
+            type="datetime-local"
+            className="mt-1 w-[50%] p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={startTime}
+            min={useGetLocalTime()}
+            onChange={(e) => setStartTime(e.target.value)}
+          />
+          <input
+            type="datetime-local"
+            className="mt-1 w-[50%] p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={endTime}
+            min={startTime}
+            onChange={(e) => setEndTime(e.target.value)}
+          />
         </div>
       </form>
     </div>
