@@ -3,6 +3,7 @@ import {
   useGetLocalTime,
   getTodayEndTime,
 } from "../assets/utils/useGetLocalTime";
+import Swal from "sweetalert2";
 const AddItems = ({ setTodos, todos }) => {
   const [newTodo, setNewTodo] = useState("");
   const [priority, setPriority] = useState("Low");
@@ -31,18 +32,42 @@ const AddItems = ({ setTodos, todos }) => {
     if (checkAlreadyExist()) {
       setError("Todo already exists");
     } else if (newTodo.trim()) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
       // eslint-disable-next-line react-hooks/rules-of-hooks
       setStartTime(useGetLocalTime());
       setEndTime(getTodayEndTime());
+      if(startTime.trim()=="" || endTime.trim()=="" || startTime==null || endTime==null || startTime==undefined || endTime==undefined) {
+        
+        Toast.fire({
+          icon: "error",
+          title: "Please fill all fields",
+        });
+        return   
+      }
+
       const updatedTodos = [
         ...todos,
-        { text: newTodo, completed: false, priority, ai, startTime, endTime },
+        { text: newTodo.trim(), completed: false, priority, ai, startTime, endTime },
       ];
       setTodos(sortTodosByPriority(updatedTodos));
       setNewTodo("");
       setPriority("Low");
       setAi("No AI");
       setError("");
+      Toast.fire({
+        icon: "success",
+        title: "Todo added successfully",
+      });
     } else {
       setError("Todo text cannot be empty.");
     }

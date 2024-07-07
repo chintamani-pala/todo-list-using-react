@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaArrowCircleDown, FaArrowCircleUp } from "react-icons/fa";
+import Swal from "sweetalert2";
 import {
   useGetLocalTime,
   getTodayEndTime,
@@ -45,6 +46,24 @@ const TodoItems = ({
 
   const handleEditSubmit = (e, index) => {
     e.preventDefault();
+    console.log(startTime, endTime);
+    if(startTime.trim()=="" || endTime.trim()=="" || startTime==null || endTime==null || editText=="" || editText==null || startTime==undefined || endTime==undefined) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "error",
+        title: "Please fill all fields",
+      });     
+    }
     handleEditTodo(index, editText, editPriority, editAi, startTime, endTime);
     setEditingIndex(null); // Exit edit mode after submitting
   };

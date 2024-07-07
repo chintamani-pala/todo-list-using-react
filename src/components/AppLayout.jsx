@@ -16,6 +16,19 @@ function TodoListApp() {
   });
   const [editingIndex, setEditingIndex] = useState(null);
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
+
   const priorityOrder = {
     High: 1,
     Medium: 2,
@@ -36,6 +49,13 @@ function TodoListApp() {
     newStartTime,
     newEndTime
   ) => {
+    if(newText.trim() === "" || newPriority.trim() === "" || newAi.trim() === "" || newStartTime.trim() === "" || newEndTime.trim() === "" || newStartTime==null || newEndTime==null || newStartTime==undefined || newEndTime==undefined) {
+      Toast.fire({
+        icon: "error",
+        title: "Please fill all fields",
+      });
+      return 
+    }
     const updatedTodos = todos.map((todo, i) =>
       i === index
         ? {
@@ -49,7 +69,11 @@ function TodoListApp() {
         : todo
     );
     setTodos(sortTodosByPriority(updatedTodos));
-    setEditingIndex(null); // Exit edit mode
+    setEditingIndex(null);
+    Toast.fire({
+      icon: "success",
+      title: "All todo deleted successfully",
+    });
   };
   // Save todos to localStorage whenever todos change
   useEffect(() => {
@@ -61,17 +85,7 @@ function TodoListApp() {
   }, [todos]);
 
   const handleClearTodos = () => {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "top-end",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.onmouseenter = Swal.stopTimer;
-        toast.onmouseleave = Swal.resumeTimer;
-      },
-    });
+    
     try {
       Swal.fire({
         title: "Are you sure?",
