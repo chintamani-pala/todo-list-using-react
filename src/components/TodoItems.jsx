@@ -70,7 +70,7 @@ const TodoItems = ({
                 : "bg-red-100"
             }`}
           >
-            <div className="flex items-center w-full">
+            <div className="flex items-center w-[90%]">
               <input
                 type="checkbox"
                 className="mr-2"
@@ -108,7 +108,7 @@ const TodoItems = ({
                       <option value="Chat GPT">Chat GPT</option>
                     </select>
                   </div>
-                  <div className="flex space-x-2">
+                  <div className="flex space-x-2 w-[97%]">
                     <input
                       type="datetime-local"
                       className="mt-1 w-[50%] p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -125,7 +125,7 @@ const TodoItems = ({
                       onChange={(e) => setEndTime(e.target.value)}
                     />
                   </div>
-                  <div className="flex justify-center items-start md:items-center md:space-x-2 mt-2">
+                  <div className="flex justify-center items-center space-x-2 mt-2">
                     <button
                       className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
                       type="submit"
@@ -169,7 +169,7 @@ const TodoItems = ({
               )}
             </div>
             <div
-              className="w-full flex items-center justify-between cursor-pointer"
+              className="w-[90%] flex items-center justify-between cursor-pointer"
               onClick={() => toggleDropdown(index)}
             >
               <span>{expandedIndex === index ? 'Hide' : 'Show'} details</span>
