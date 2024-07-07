@@ -47,9 +47,6 @@ const AddItems = ({ setTodos, todos }) => {
       setError("Todo text cannot be empty.");
     }
   };
-  useEffect(() => {
-    console.log(todos);
-  }, [todos]);
 
   return (
     <div>

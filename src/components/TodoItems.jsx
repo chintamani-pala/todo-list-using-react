@@ -4,7 +4,6 @@ import {
   useGetLocalTime,
   getTodayEndTime,
 } from "../assets/utils/useGetLocalTime";
-
 const TodoItems = ({
   todos,
   setTodos,
@@ -184,6 +183,9 @@ const TodoItems = ({
               <div className="w-full mt-2 p-4 bg-gray-100 rounded-md">
                 <p className="text-sm text-gray-700">
                   <span className="font-bold">Priority:</span> {todo.priority}
+                </p>
+                <p className="text-sm text-gray-700">
+                  <span className="font-bold">Status:</span> {todo.completed ? "Completed" : "Not Completed"}
                 </p>
                 <p className="text-sm text-gray-700">
                   <span className="font-bold">AI:</span> {todo.ai}
