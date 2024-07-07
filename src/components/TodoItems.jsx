@@ -39,11 +39,13 @@ const TodoItems = ({
     setEditText(todos[index].text);
     setEditPriority(todos[index].priority);
     setEditAi(todos[index].ai);
+    setStartTime(todos[index].startTime)
+    setEndTime(todos[index].endTime)
   };
 
   const handleEditSubmit = (e, index) => {
     e.preventDefault();
-    handleEditTodo(index, editText, editPriority, editAi);
+    handleEditTodo(index, editText, editPriority, editAi, startTime, endTime);
     setEditingIndex(null); // Exit edit mode after submitting
   };
 

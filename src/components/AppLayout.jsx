@@ -27,9 +27,9 @@ function TodoListApp() {
     );
   };
 
-  const handleEditTodo = (index, newText, newPriority, newAi) => {
+  const handleEditTodo = (index, newText, newPriority, newAi, newStartTime, newEndTime) => {
     const updatedTodos = todos.map((todo, i) =>
-      i === index ? { ...todo, text: newText, priority: newPriority, ai: newAi } : todo
+      i === index ? { ...todo, text: newText, priority: newPriority, ai: newAi, startTime: newStartTime, endTime: newEndTime } : todo
     );
     setTodos(sortTodosByPriority(updatedTodos));
     setEditingIndex(null); // Exit edit mode
@@ -64,6 +64,7 @@ function TodoListApp() {
           editingIndex={editingIndex}
           setEditingIndex={setEditingIndex}
           handleEditTodo={handleEditTodo}
+
         />
         {todos.length > 0 && (
           <button
